@@ -34,6 +34,10 @@ public class UserMealsUtil {
         System.out.println("Using for-each loop...");
         meals = getFilteredWithExceeded(mealList, startTime, finishTime, caloriesPerDay);
         printMealsWithExceed(meals);
+
+        System.out.println("Using Java8 streams...");
+        meals = getFilteredWithExceededByStreams(mealList, startTime, finishTime, caloriesPerDay);
+        printMealsWithExceed(meals);
     }
 
     public List<UserMealWithExceed> getFilteredWithExceeded(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
@@ -64,6 +68,20 @@ public class UserMealsUtil {
         }
 
         return mealsOver;
+    }
+
+    public List<UserMealWithExceed> getFilteredWithExceededByStreams(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+        // sum of calories up by day
+        Map<LocalDate,Integer> totalCaloriesPerDay = mealList.stream().collect(
+                Collectors.groupingBy(meal ->  meal.getDateTime().toLocalDate(), Collectors.summingInt(UserMeal::getCalories))
+        );
+
+        return mealList.stream()
+                .filter(meal -> TimeUtil.isBetween(meal.getDateTime().toLocalTime(), startTime, endTime))
+                .filter(meal -> totalCaloriesPerDay.get(meal.getDateTime().toLocalDate()) > caloriesPerDay)
+                .map(meal -> new UserMealWithExceed(meal.getDateTime(), meal.getDescription(), meal.getCalories(), true))
+                .collect(Collectors.toList())
+        ;
     }
 
     private void printMealsWithExceed(List<UserMealWithExceed> mealList) {
