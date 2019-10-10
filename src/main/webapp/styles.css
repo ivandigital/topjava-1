@@ -1,0 +1,30 @@
+table {
+    border: 1px inset black;
+    border-collapse: collapse;
+}
+table th, td {
+    border: 1px solid darkgrey;
+    padding: 10px;
+}
+table th {
+    font-weight: bold;
+    background-color: lightgray;
+}
+
+table.tableData {
+    margin: 5px;
+}
+table.tableData tr {
+    background-color: palegreen;
+}
+table.tableData tr.over-calories {
+    background-color: #FF9999;
+}
+table.tableData td.number {
+    text-align: right;
+}
+
+.hidden {
+    display: none;
+    color: lightgray;
+}

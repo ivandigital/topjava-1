@@ -11,27 +11,33 @@
 <html>
 <head>
     <title>Meals</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
     <h3><a href="index.html">Home</a></h3>
     <hr>
-    <h2>Meals list</h2>
-    <table>
+    <h2>Список приемов пищи</h2>
+    <table class="tableData">
         <thead>
             <tr>
                 <th>Дата-время</th>
-                <th>Блюдо</th>
+                <th>Прием пищи</th>
                 <th>Калории</th>
-                <th>Превышение</th>
+                <th class="hidden">Превышение</th>
             </tr>
         </thead>
         <tbody>
             <c:forEach items="${meals}" var="meal">
+              <c:if test="${meal.isExcess()}">
+                <tr class="over-calories">
+              </c:if>
+              <c:if test="! ${meal.isExcess()}">
                 <tr>
+              </c:if>
                     <td>${meal.getDateTime().format(datetimeFormatter)}</td>
                     <td>${meal.getDescription()}</td>
-                    <td>${meal.getCalories()} </td>
-                    <td>${meal.isExcess()}</td>
+                    <td class="number">${meal.getCalories()} </td>
+                    <td class="hidden">${meal.isExcess()}</td>
                 </tr>
             </c:forEach>
         </tbody>
