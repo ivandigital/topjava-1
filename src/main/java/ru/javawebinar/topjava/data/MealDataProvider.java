@@ -18,11 +18,10 @@ public class MealDataProvider {
 
     private static List<Meal> meals;
 
-    private MealDataProvider() {
-        initData();
-    };
+    private MealDataProvider() {}
 
-    private static void initData() {
+    // static initializer
+    static {
         meals = Arrays.asList(
                 new Meal(1, LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
                 new Meal(2, LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),
@@ -71,7 +70,7 @@ public class MealDataProvider {
 
     public static boolean remove(int id) {
         synchronized (meals) {
-            Meal meal = meals.stream().filter(m -> m.getId()==id).findFirst().get();
+            Meal meal = meals.stream().filter(m -> m.getId()==id).findFirst().orElse(null);
             if (meal != null) {
                 meals.remove(meal);
                 return false;
@@ -81,6 +80,11 @@ public class MealDataProvider {
     }
 
     private static int getMaxId() {
-        return meals.stream().max(Comparator.comparing(Meal::getId)).get().getId();
+        Meal meal = meals.stream().max(Comparator.comparing(Meal::getId)).orElse(null);
+        if (meal != null) {
+            return meal.getId();
+        }
+        return -1;
     }
+
 }
