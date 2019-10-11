@@ -23,6 +23,7 @@
     <servlet-mapping>
         <servlet-name>mealsServlet</servlet-name>
         <url-pattern>/meals</url-pattern>
+        <url-pattern>/meals?id=*</url-pattern>
     </servlet-mapping>
 
 </web-app>

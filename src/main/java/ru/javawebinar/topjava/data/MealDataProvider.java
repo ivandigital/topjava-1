@@ -53,7 +53,7 @@ public class MealDataProvider {
     }
 
     public static MealTo findById(int id) {
-        Meal meal = meals.stream().filter(m -> m.getId()==id).findFirst().get();
+        Meal meal = meals.stream().filter(m -> m.getId()==id).findFirst().orElse(null);
         if (meal != null) {
             return new MealTo(meal.getId(), meal.getDateTime(), meal.getDescription(), meal.getCalories(), false);
         }

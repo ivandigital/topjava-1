@@ -34,10 +34,18 @@
               <c:if test="! ${meal.isExcess()}">
                 <tr>
               </c:if>
-                    <td>${meal.getDateTime().format(datetimeFormatter)}</td>
-                    <td>${meal.getDescription()}</td>
-                    <td class="number">${meal.getCalories()} </td>
-                    <td class="hidden">${meal.isExcess()}</td>
+                    <td>
+                        ${meal.getDateTime().format(datetimeFormatter)}
+                    </td>
+                    <td>
+                        <a href="meals?id=${meal.getId()}">${meal.getDescription()}</a>
+                    </td>
+                    <td class="number">
+                        ${meal.getCalories()}
+                    </td>
+                    <td class="hidden">
+                        ${meal.isExcess()}
+                    </td>
                 </tr>
             </c:forEach>
         </tbody>

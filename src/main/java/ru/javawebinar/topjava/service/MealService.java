@@ -8,4 +8,6 @@ public interface MealService {
 
     public List<MealTo> findAll();
 
+    public MealTo get(int id);
+
 }
