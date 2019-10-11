@@ -11,17 +11,31 @@ table th {
     background-color: lightgray;
 }
 
-table.tableData {
+table.tableList {
     margin: 5px;
 }
-table.tableData tr {
+table.tableList tr {
     background-color: palegreen;
 }
-table.tableData tr.over-calories {
+table.tableList tr.over-calories {
     background-color: #FF9999;
 }
-table.tableData td.number {
+table.tableList td.number {
     text-align: right;
+}
+
+table.tableCard {
+    border: 0px;
+}
+table.tableCard th, td {
+    border: 0px;
+/*    border-bottom: 1px inset lightgray; */
+    padding: 5px;
+}
+table.tableCard td:first-child {
+    font-weight: bold;
+    font-style: italic;
+    padding-right: 50px;
 }
 
 .hidden {

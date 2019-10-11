@@ -18,11 +18,10 @@ public class MealDataProvider {
 
     private static List<Meal> meals;
 
-    private MealDataProvider() {
-        initData();
-    };
+    private MealDataProvider() {}
 
-    private static void initData() {
+    // static initializer
+    static {
         meals = Arrays.asList(
                 new Meal(1, LocalDateTime.of(2015, Month.MAY, 30, 10, 0), "Завтрак", 500),
                 new Meal(2, LocalDateTime.of(2015, Month.MAY, 30, 13, 0), "Обед", 1000),

@@ -30,11 +30,12 @@ public class MealServlet extends HttpServlet {
 
         String pageNext = "";
         if (request.getParameterMap().isEmpty()) { // no parameters
-            log.debug("No parameters --> Redirect to " + PAGE_LIST);
+            log.debug("No parameters --> Forward to " + PAGE_LIST);
+            request.setAttribute("meals", service.findAll());
             pageNext = PAGE_LIST;
         }
         else if (! request.getParameter("id").isEmpty()) { // view a meal
-            log.debug("Got parameter 'Id' --> Redirect to " + PAGE_VIEW);
+            log.debug("Got parameter 'Id' --> Forward to " + PAGE_VIEW);
             String id = request.getParameter("id");
             request.setAttribute("id", id);
             if (id != null && !id.isEmpty() && Integer.parseInt(id) != 0) {
@@ -49,7 +50,8 @@ public class MealServlet extends HttpServlet {
             pageNext = PAGE_VIEW;
         }
         else { // default action
-            log.debug("Unknown parameter --> Redirect to " + PAGE_LIST);
+            log.debug("Unknown parameter --> Forward to " + PAGE_LIST);
+            request.setAttribute("meals", service.findAll());
             pageNext = PAGE_LIST;
         }
 
