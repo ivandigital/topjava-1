@@ -2,7 +2,10 @@ package ru.javawebinar.topjava.util;
 
 
 import ru.javawebinar.topjava.model.AbstractBaseEntity;
+import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
+
+import java.util.Objects;
 
 public class ValidationUtil {
 
@@ -31,6 +34,12 @@ public class ValidationUtil {
         }
     }
 
+    public static void checkNotNew(AbstractBaseEntity entity) {
+        if (entity.isNew()) {
+            throw new IllegalArgumentException(entity + " must not be new");
+        }
+    }
+
     public static void assureIdConsistent(AbstractBaseEntity entity, int id) {
 //      conservative when you reply, but accept liberally (http://stackoverflow.com/a/32728226/548473)
         if (entity.isNew()) {
@@ -39,4 +48,12 @@ public class ValidationUtil {
             throw new IllegalArgumentException(entity + " must be with id=" + id);
         }
     }
+
+    public static void assureUserMealConsistent(int userId, Meal meal) {
+        Objects.requireNonNull(meal);
+        if (meal.getUserId() != userId) {
+            throw new IllegalArgumentException("This meal is not related to this user");
+        }
+    }
+
 }
