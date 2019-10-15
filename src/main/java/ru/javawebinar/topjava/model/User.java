@@ -20,6 +20,10 @@ public class User extends AbstractNamedEntity {
 
     private int caloriesPerDay = DEFAULT_CALORIES_PER_DAY;
 
+    public User(String name, String email, String password, Role role) {
+        this(null, name, email, password, DEFAULT_CALORIES_PER_DAY, true, EnumSet.of(role));
+    }
+
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
         this(id, name, email, password, DEFAULT_CALORIES_PER_DAY, true, EnumSet.of(role, roles));
     }
@@ -79,13 +83,8 @@ public class User extends AbstractNamedEntity {
 
     @Override
     public String toString() {
-        return "User (" +
-                "id=" + id +
-                ", email=" + email +
-                ", name=" + name +
-                ", enabled=" + enabled +
-                ", roles=" + roles +
-                ", caloriesPerDay=" + caloriesPerDay +
-                ')';
+        return String.format("User {id=%s, name='%s', email='%s', enabled=%s, roles=%s, caloriesPerDay=%d}",
+                                    id, name, email, enabled, roles, caloriesPerDay
+        );
     }
 }
