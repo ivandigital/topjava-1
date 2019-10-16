@@ -27,19 +27,19 @@
                 <tr>
                     <td>Date interval</td>
                     <td>
-                        <input type="date" name="dateBegin" />
+                        <input type="date" name="dateBegin" value="${param.dateBegin}" />
                     </td>
                     <td>
-                        <input type="date" name="dateEnd" />
+                        <input type="date" name="dateEnd" value="${param.dateEnd}" />
                     </td>
                 </tr>
                 <tr>
                     <td>Time interval</td>
                     <td>
-                        <input type="time" name="timeBegin" />
+                        <input type="time" name="timeBegin" value="${param.timeBegin}" />
                     </td>
                     <td>
-                        <input type="time" name="timeEnd" />
+                        <input type="time" name="timeEnd" value="${param.timeEnd}" />
                     </td>
                 </tr>
                 <tr>
