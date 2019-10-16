@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public interface MealRepository {
     // null if not found, when updated
@@ -27,5 +28,8 @@ public interface MealRepository {
 
     // get meals in time period
     List<Meal> getByPeriod(LocalTime timeStart, LocalTime timeEnd, int userId);
+
+    // get meals of user by set of parameters
+    List<Meal> getByParameters(Map<String, String[]> parameters, int userId);
 
 }

@@ -95,6 +95,8 @@ public class MealServlet extends HttpServlet {
                     meals = controller.getAll();
                 }
                 else {
+                    meals = controller.findByParameters(request.getParameterMap());
+/***
                     LocalDate dateStart = null;
                     if (!StringUtils.isEmpty(request.getParameter("dateBegin")))
                         dateStart = LocalDate.parse(request.getParameter("dateBegin"));
@@ -105,6 +107,7 @@ public class MealServlet extends HttpServlet {
                     //end if
                     log.info("filter conditions: dateStart={}, dateEnd={}", dateStart, dateEnd);
                     meals = controller.getByPeriod(dateStart, dateEnd);
+ ***/
                 }
                 request.setAttribute("meals", meals);
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);

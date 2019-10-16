@@ -16,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Repository
 public class InMemoryMealRepository implements MealRepository {
@@ -55,26 +56,43 @@ public class InMemoryMealRepository implements MealRepository {
     @Override
     public List<Meal> getAllByUser(int userId) {
         return filterMeals(meal -> meal.getUserId()==userId);
-//        return repository.values().stream()
-//                .filter(meal -> meal.getUserId()==userId)
-//                .collect(Collectors.toList());
     }
 
     @Override
     public List<Meal> getByPeriod(LocalDate dateStart, LocalDate dateEnd, int userId) {
         return filterMeals(meal -> DateTimeUtil.isBetween(meal.getDate(), dateStart, dateEnd) && meal.getUserId()==userId);
-//        return repository.values().stream()
-//                .filter(meal -> DateTimeUtil.isBetween(meal.getDate(), dateStart, dateEnd))
-//                .collect(Collectors.toList());
     }
 
     @Override
     public List<Meal> getByPeriod(LocalTime timeStart, LocalTime timeEnd, int userId) {
         return filterMeals(meal -> DateTimeUtil.isBetween(meal.getTime(), timeStart, timeEnd) && meal.getUserId()==userId);
-//        return repository.values().stream()
-//                .filter(meal -> DateTimeUtil.isBetween(meal.getTime(), timeStart, timeEnd))
-//                .collect(Collectors.toList());
     }
+
+    @Override
+    public List<Meal> getByParameters(Map<String, String[]> parameters, int userId) {
+        Stream<Meal> mealStream = repository.values().stream();
+
+        // date interval
+        mealStream = filterBetweenDate(mealStream, parameters, "dateBegin", "dateEnd");
+
+        // time interval
+        mealStream = filterBetweenTime(mealStream, parameters, "timeBegin", "timeEnd");
+/*
+        // date-begin
+        if (parameters.get("dateBegin") != null && parameters.get("dateBegin").length > 0) {
+            LocalDate filterDate = LocalDate.parse(parameters.get("dateBegin")[0]);
+            mealStream = mealStream.filter(meal -> meal.getDate().compareTo(filterDate) >= 0);
+        }
+*/
+        // Sorting
+        mealStream = mealStream
+                        .sorted(Comparator.comparing(Meal::getTime))
+                        .sorted(Comparator.comparing(Meal::getDate)
+                        .reversed());
+
+        return mealStream.collect(Collectors.toList());
+    }
+
 
     private List<Meal> filterMeals(Predicate<Meal> filter) {
         return repository.values().stream()
@@ -84,6 +102,50 @@ public class InMemoryMealRepository implements MealRepository {
                 .reversed())
                 .collect(Collectors.toList())
         ;
+    }
+
+    private static Stream<Meal> filterBetweenDate(Stream<Meal> stream, Map<String, String[]> parameters, String paramDateStart, String paramDateEnd) {
+        if (parameters == null || parameters.isEmpty())
+            return stream;
+        //end if
+        String strDateStart = getParameterValue(parameters, paramDateStart);
+        String strDateEnd = getParameterValue(parameters, paramDateEnd);
+        if (strDateStart != null && !strDateStart.trim().isEmpty()) {
+            LocalDate filterDate = LocalDate.parse(strDateStart.trim());
+            stream = stream.filter(meal -> meal.getDate().compareTo(filterDate) >= 0);
+        }
+        if (strDateEnd != null && !strDateEnd.trim().isEmpty()) {
+            LocalDate filterDate = LocalDate.parse(strDateEnd.trim());
+            stream = stream.filter(meal -> meal.getDate().compareTo(filterDate) <= 0);
+        }
+        return stream;
+    }
+
+    private static Stream<Meal> filterBetweenTime(Stream<Meal> stream, Map<String, String[]> parameters, String paramTimeStart, String paramTimeEnd) {
+        if (parameters == null || parameters.isEmpty())
+            return stream;
+        //end if
+        String strTimeStart = getParameterValue(parameters, paramTimeStart);
+        String strTimeEnd = getParameterValue(parameters, paramTimeEnd);
+        if (strTimeStart != null && !strTimeStart.trim().isEmpty()) {
+            LocalTime filterTime = LocalTime.parse(strTimeStart.trim());
+            stream = stream.filter(meal -> meal.getTime().compareTo(filterTime) >= 0);
+        }
+        if (strTimeEnd != null && !strTimeEnd.trim().isEmpty()) {
+            LocalTime filterTime = LocalTime.parse(strTimeEnd.trim());
+            stream = stream.filter(meal -> meal.getTime().compareTo(filterTime) <= 0);
+        }
+        return stream;
+    }
+
+    private static String getParameterValue(Map<String, String[]> parameters, String paramName) {
+        if (parameters == null || parameters.isEmpty())
+            return null;
+        //end if
+        if (parameters.get(paramName) == null || parameters.get(paramName).length == 0)
+            return null;
+        //end if
+        return parameters.get(paramName)[0];
     }
 
 }

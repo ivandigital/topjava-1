@@ -13,6 +13,7 @@ import ru.javawebinar.topjava.web.SecurityUtil;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.assureIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.assureUserMealConsistent;
@@ -60,6 +61,12 @@ public class MealRestController {
     public void delete(int id) {
         int userId = SecurityUtil.authUserId();
         service.delete(id, userId);
+    }
+
+    public List<MealTo> findByParameters(Map<String, String[]> parameters) {
+        int userId = SecurityUtil.authUserId();
+        List<Meal> meals = service.getByParameters(parameters, userId) ;
+        return MealsUtil.getTos(meals, SecurityUtil.authUserCaloriesPerDay());
     }
 
     public List<MealTo> getByPeriod(LocalDate dateStart, LocalDate dateEnd) {

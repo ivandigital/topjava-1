@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.repository.MealRepository;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Map;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.*;
 
@@ -50,6 +51,10 @@ public class MealService {
 
     public List<Meal> getAll(int userId) {
         return repository.getAllByUser(userId);
+    }
+
+    public List<Meal> getByParameters(Map<String, String[]> parameters, int userId) {
+        return repository.getByParameters(parameters, userId);
     }
 
     public List<Meal> getByPeriod(LocalDate dateStart, LocalDate dateEnd, int userId) {
