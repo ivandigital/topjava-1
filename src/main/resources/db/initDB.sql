@@ -1,7 +1,15 @@
+--
+-- Delete DB objects
+--
+DROP TABLE IF EXISTS meals;
 DROP TABLE IF EXISTS user_roles;
 DROP TABLE IF EXISTS users;
+
 DROP SEQUENCE IF EXISTS global_seq;
 
+--
+-- Create DB objects
+--
 CREATE SEQUENCE global_seq START WITH 100000;
 
 CREATE TABLE users
@@ -23,3 +31,14 @@ CREATE TABLE user_roles
   CONSTRAINT user_roles_idx UNIQUE (user_id, role),
   FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS meals
+(
+    id              INTEGER     PRIMARY KEY     DEFAULT nextval('global_seq'),
+    description     VARCHAR     NOT NULL,
+    datetime        TIMESTAMP   NOT NULL,
+    calories        INTEGER     NOT NULL,
+    user_id         INTEGER     NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+CREATE UNIQUE INDEX meals_unique_user_meal_idx ON meals (user_id, datetime);
