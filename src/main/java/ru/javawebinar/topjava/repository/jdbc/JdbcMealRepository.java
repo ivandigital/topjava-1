@@ -103,7 +103,6 @@ public class JdbcMealRepository implements MealRepository {
             .addValue("start_date", startDate)
             .addValue("end_date", endDate);
         return parametersJdbcTemplate.query(sql, params, ROW_MAPPER);
-///        return jdbcTemplate.query(sql, ROW_MAPPER, startDate, endDate, userId);
     }
 
 }
