@@ -11,6 +11,12 @@ import java.time.format.DateTimeFormatter;
 public class DateTimeUtil {
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
+    private static final int MIN_YEAR = 1900;
+    private static final int MAX_YEAR = 2100;
+
+    public static final LocalDate MIN_DATE = LocalDate.of(MIN_YEAR, 01, 01);
+    public static final LocalDate MAX_DATE = LocalDate.of(MAX_YEAR, 12, 31);
+
     private DateTimeUtil() {
     }
 
