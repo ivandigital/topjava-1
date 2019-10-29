@@ -1,12 +1,15 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.AfterClass;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlConfig;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit4.SpringRunner;
+import ru.javawebinar.topjava.TestWatcher;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.util.exception.NotFoundException;
 
@@ -21,12 +24,15 @@ import static ru.javawebinar.topjava.UserTestData.USER_ID;
         "classpath:spring/spring-app.xml",
         "classpath:spring/spring-db.xml"
 })
-@RunWith(SpringJUnit4ClassRunner.class)
+@RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class MealServiceTest {
 
     @Autowired
     private MealService service;
+
+    @Rule
+    public TestWatcher testWatcher = new TestWatcher();
 
     @Test
     public void delete() throws Exception {
@@ -92,4 +98,16 @@ public class MealServiceTest {
                 LocalDate.of(2015, Month.MAY, 30),
                 LocalDate.of(2015, Month.MAY, 30), USER_ID), MEAL3, MEAL2, MEAL1);
     }
+
+    @AfterClass
+    public static void onFinishAllTests() {
+        System.out.println(String.format(
+                "Tests statistics: total %d, OK %d, failed %d",
+                TestWatcher.getTestsTotal(), TestWatcher.getTestsOK(), TestWatcher.getTestsFailed()
+                ))
+        ;
+        System.out.println("Tests timing:");
+        TestWatcher.getTestsTiming().forEach((test, timing) -> System.out.println(String.format("\t %s : %d ms", test, timing)));
+    }
+
 }
