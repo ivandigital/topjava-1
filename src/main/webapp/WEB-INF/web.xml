@@ -6,6 +6,15 @@
 
     <display-name>Topjava</display-name>
 
+    <!--
+        Does NOT work Spring profile selection via web.xml
+        Use start parameter for this
+    <context-param>
+        <param-name>spring.profiles.active</param-name>
+        <param-value>postgres, jdbc</param-value>
+    </context-param>
+    -->
+
     <servlet>
         <servlet-name>userServlet</servlet-name>
         <servlet-class>ru.javawebinar.topjava.web.UserServlet</servlet-class>
