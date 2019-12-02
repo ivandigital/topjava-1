@@ -36,6 +36,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
     void getAll() throws Exception {
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(REST_URL));
         result.andDo(print())
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getAll"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().encoding("UTF-8"))
@@ -48,6 +50,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
         String url = REST_URL + "/" + MealTestData.MEAL1_ID;
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(url));
         result.andDo(print())
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getMeal"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(content().encoding("UTF-8"))
@@ -61,6 +65,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
         String url = REST_URL + "/" + invalidMealId;
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(url));
         result.andDo(print())
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getMeal"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string(""))
         ;
@@ -75,6 +81,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(newMeal))
         );
         result.andDo(print())
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("createMeal"))
                 .andExpect(status().isCreated())
                 .andExpect(header().exists("Location"))
                 .andExpect(redirectedUrlPattern(ServletUriComponentsBuilder.fromCurrentContextPath().path(REST_URL + "/*").toUriString()))
@@ -96,6 +104,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(changedMeal))
         );
         result.andDo(print())
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("update"))
                 .andExpect(status().isOk())
         ;
         Meal rereadMeal = mealService.get(changedMealId, UserTestData.USER_ID);
@@ -108,6 +118,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
         String url = REST_URL + "/" + mealIdToDelete;
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete(url));
         result.andDo(print())
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("delete"))
                 .andExpect(status().isNoContent())
         ;
 
@@ -121,6 +133,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(REST_URL + "/filter?startDate={startDate}&endDate={endDate}", startDate, endDate);
         ResultActions result = mockMvc.perform(requestBuilder);
         checkGeneralJsonResponse(result)
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getBetween"))
                 .andExpect(jsonPath("$").isNotEmpty())
         ;
     }
@@ -135,6 +149,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
         ;
         ResultActions result = mockMvc.perform(requestBuilder);
         checkGeneralJsonResponse(result)
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getBetween"))
                 .andExpect(jsonPath("$").isNotEmpty())
         ;
     }
@@ -147,6 +163,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 ;
         ResultActions result = mockMvc.perform(requestBuilder);
         checkGeneralJsonResponse(result)
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getBetween"))
                 .andExpect(jsonPath("$").isNotEmpty())
         ;
     }
@@ -159,6 +177,8 @@ public class MealRestControllerTest extends AbstractControllerTest {
                 ;
         ResultActions result = mockMvc.perform(requestBuilder);
         checkGeneralJsonResponse(result)
+                .andExpect(handler().handlerType(MealRestController.class))
+                .andExpect(handler().methodName("getBetween"))
                 .andExpect(jsonPath("$").isNotEmpty())
         ;
     }
