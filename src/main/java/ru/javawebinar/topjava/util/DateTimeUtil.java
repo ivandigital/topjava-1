@@ -31,6 +31,10 @@ public class DateTimeUtil {
         return StringUtils.isEmpty(str) ? null : LocalTime.parse(str);
     }
 
+    public static @Nullable LocalDateTime parseLocalDateTime(@Nullable String str) {
+        return StringUtils.isEmpty(str) ? null : LocalDateTime.parse(str);
+    }
+
     public static LocalDateTime getStartInclusive(LocalDate localDate) {
         return localDate != null ? localDate.atStartOfDay() : MIN_DATE;
     }
