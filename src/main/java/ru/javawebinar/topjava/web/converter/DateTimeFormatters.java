@@ -47,7 +47,7 @@ public class DateTimeFormatters {
 
         @Override
         public String print(LocalDateTime dateTime, Locale locale) {
-            return dateTime.format(DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm"));
+            return dateTime.format(DATE_TIME_FORMATTER);
         }
     }
 
