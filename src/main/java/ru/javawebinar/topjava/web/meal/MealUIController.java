@@ -3,7 +3,6 @@ package ru.javawebinar.topjava.web.meal;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -42,8 +41,6 @@ public class MealUIController extends AbstractMealController {
     @PostMapping
     @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public ResponseEntity<String> createOrReplace(@Valid MealTo meal, BindingResult bindingResult) {
-        Assert.notNull(meal, "Meal must not be empty");
-
         if (bindingResult.hasErrors()) {
             StringBuilder errorsText = new StringBuilder();
             for (FieldError fieldError : bindingResult.getFieldErrors()) {
