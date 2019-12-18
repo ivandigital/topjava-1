@@ -84,4 +84,9 @@ public class ValidationUtil {
                         .collect(Collectors.joining("<br>"))
         );
     }
+
+    public static String getErrorText(BindingResult result) {
+        return getErrorResponse(result).getBody();
+    }
+
 }
