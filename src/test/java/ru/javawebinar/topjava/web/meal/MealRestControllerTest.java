@@ -13,8 +13,7 @@ import ru.javawebinar.topjava.web.AbstractControllerTest;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static ru.javawebinar.topjava.MealTestData.*;
 import static ru.javawebinar.topjava.TestUtil.readFromJson;
 import static ru.javawebinar.topjava.TestUtil.readFromJsonMvcResult;
@@ -40,7 +39,6 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(result -> MEAL_MATCHERS.assertMatch(readFromJsonMvcResult(result, Meal.class), ADMIN_MEAL1));
     }
-
 
     @Test
     void getUnauth() throws Exception {
@@ -114,4 +112,31 @@ class MealRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(MEAL_TO_MATCHERS.contentJson(getTos(MEALS, USER.getCaloriesPerDay())));
     }
+
+    @Test
+    void createWithInvalidData() throws Exception {
+        Meal newMeal = MealTestData.getNew();
+        newMeal.setDescription("");
+        newMeal.setCalories(-1);
+        perform(doPost().jsonBody(newMeal).basicAuth(USER))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").isNotEmpty())
+                .andExpect(jsonPath("$.detail").isNotEmpty())
+        ;
+    }
+
+    @Test
+    void updateWithInvalidData() throws Exception {
+        Meal updated = MealTestData.getUpdated();
+        updated.setDateTime(null);
+        updated.setCalories(null);
+        perform(doPut(MEAL1_ID).jsonBody(updated).basicAuth(USER))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(jsonPath("$.type").isNotEmpty())
+                .andExpect(jsonPath("$.detail").isNotEmpty())
+        ;
+    }
+
 }
